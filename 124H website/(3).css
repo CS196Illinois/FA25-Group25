@@ -1,6 +1,4 @@
-/* --------------------------- */
-/* 🌟 全局样式 Body */
-/* --------------------------- */
+
 body {
     font-family: "Poppins", "Inter", Arial, sans-serif;
     background: linear-gradient(180deg, #f9f9ff 0%, #ffffff 100%);
@@ -13,9 +11,7 @@ body {
     align-items: center;
 }
 
-/* --------------------------- */
-/* 🌟 标题样式 */
-/* --------------------------- */
+
 h1 {
     font-size: 2.4rem;
     font-weight: 700;
@@ -40,9 +36,7 @@ p.subtext {
     margin-bottom: 1.5rem;
 }
 
-/* --------------------------- */
-/* 🌟 内容区块 Section */
-/* --------------------------- */
+
 .section {
     background: #ffffff;
     border-radius: 16px;
@@ -59,9 +53,7 @@ p.subtext {
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
-/* --------------------------- */
-/* 🌟 输入区域 Input Group */
-/* --------------------------- */
+
 .input-group {
     display: flex;
     align-items: center;
@@ -76,7 +68,7 @@ label {
     font-size: 1rem;
 }
 
-/* 下拉菜单样式 */
+
 select {
     background-color: #ece7fa;
     color: #222;
@@ -95,9 +87,7 @@ select:hover {
     transform: translateY(-1px);
 }
 
-/* --------------------------- */
-/* 🌟 图表区 Graph */
-/* --------------------------- */
+
 .graph {
     display: flex;
     align-items: center;
@@ -131,9 +121,7 @@ select:hover {
     color: #2b165e;
 }
 
-/* --------------------------- */
-/* 🌟 响应式设计 (移动端) */
-/* --------------------------- */
+
 @media (max-width: 600px) {
     body {
         padding: 30px 15px;

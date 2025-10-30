@@ -4,43 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>Forexplorer - Currency Exchange</title>
-  <!-- 引入CSS -->
+
   <link rel="stylesheet" href="(2).css">
 </head>
 <body>
 
-  <!-- LOGO图片 -->
+ 
   <img src="LOGO.png" alt="Forexplorer Logo">
 
-  <!-- 页面标题 -->
+  
   <h1>Forexplorer - Currency Exchange</h1>
 
-  <!-- 货币转换输入区 -->
+
   <p>
     From: <select id="from"></select> 
     To: <select id="to"></select> 
     Amount: <input id="amt" value="1" size="6">
   </p>
 
-  <!-- 转换按钮 -->
+
   <button id="btn">Convert</button>
 
-  <!-- 显示转换结果 -->
   <p id="result"></p>
 
-  <!-- 图表容器 -->
+
   <div id="graph">Forex graph — in progress</div>
 
-  <!-- JavaScript 逻辑 -->
+ 
   <script>
-    // 获取页面元素
+
     const fromEl = document.getElementById('from');
     const toEl = document.getElementById('to');
     const amtEl = document.getElementById('amt');
     const resEl = document.getElementById('result');
     const graph = document.getElementById('graph');
 
-    // 后备货币列表（当API失败时使用）
     const fallbackSymbols = {
       USD: "United States Dollar",
       EUR: "Euro",
@@ -208,7 +206,7 @@ ZWL: "Zimbabwe Dollar"
      
     };
 
-    // 初始化下拉框
+
     async function populate() {
       fromEl.disabled = toEl.disabled = true;
       const loadingOpt = new Option("Loading currencies...", "");
@@ -240,7 +238,7 @@ ZWL: "Zimbabwe Dollar"
       }
     }
 
-    // 执行货币转换
+   
     async function convert(){
       const f = fromEl.value, t = toEl.value, a = amtEl.value || 1;
       resEl.textContent = 'Checking...';
@@ -253,10 +251,10 @@ ZWL: "Zimbabwe Dollar"
       }
     }
 
-    // 绑定点击事件
+  
     document.getElementById('btn').addEventListener('click', convert);
 
-    // 页面加载时初始化下拉框
+    
     populate();
   </script>
 </body>

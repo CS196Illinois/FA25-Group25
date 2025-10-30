@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Forexplorer - Currency Exchange</title>
+  <!-- 引入CSS -->
+  <link rel="stylesheet" href="(2).css">
+</head>
+<body>
+
+  <!-- LOGO图片 -->
+  <img src="LOGO.png" alt="Forexplorer Logo">
+
+  <!-- 页面标题 -->
+  <h1>Forexplorer - Currency Exchange</h1>
+
+  <!-- 货币转换输入区 -->
+  <p>
+    From: <select id="from"></select> 
+    To: <select id="to"></select> 
+    Amount: <input id="amt" value="1" size="6">
+  </p>
+
+  <!-- 转换按钮 -->
+  <button id="btn">Convert</button>
+
+  <!-- 显示转换结果 -->
+  <p id="result"></p>
+
+  <!-- 图表容器 -->
+  <div id="graph">Forex graph — in progress</div>
+
+  <!-- JavaScript 逻辑 -->
+  <script>
+    // 获取页面元素
+    const fromEl = document.getElementById('from');
+    const toEl = document.getElementById('to');
+    const amtEl = document.getElementById('amt');
+    const resEl = document.getElementById('result');
+    const graph = document.getElementById('graph');
+
+    // 后备货币列表（当API失败时使用）
+    const fallbackSymbols = {
+      USD: "United States Dollar",
+      EUR: "Euro",
+      AFN: "Afghani",
+ALL: "Lek",
+DZD: "Algerian Dinar",
+AOA: "Kwanza",
+XCD: "East Caribbean Dollar",
+ARS: "Argentine Peso",
+AMD: "Armenian Dram",
+AWG: "Aruban Florin",
+AUD: "Australian Dollar",
+AZN: "Azerbaijanian Manat",
+BSD: "Bahamian Dollar",
+BHD: "Bahraini Dinar",
+BDT: "Taka",
+BBD: "Barbados Dollar",
+BYN: "Belarussian Ruble",
+BZD: "Belize Dollar",
+XOF: "CFA Franc BCEAO",
+BMD: "Bermudian Dollar",
+BTN: "Ngultrum",
+BOB: "Boliviano",
+BOV: "Mvdol",
+BAM: "Convertible Mark",
+BWP: "Pula",
+NOK: "Norwegian Krone",
+BRL: "Brazilian Real",
+BND: "Brunei Dollar",
+BGN: "Bulgarian Lev",
+BIF: "Burundi Franc",
+CVE: "Cabo Verde Escudo",
+KHR: "Riel",
+XAF: "CFA Franc BEAC",
+CAD: "Canadian Dollar",
+KYD: "Cayman Islands Dollar",
+CLF: "Unidad de Fomento",
+CLP: "Chilean Peso",
+CNY: "Yuan Renminbi",
+COP: "Colombian Peso",
+COU: "Unidad de Valor Real",
+KMF: "Comoro Franc",
+CDF: "Congolese Franc",
+NZD: "New Zealand Dollar",
+CRC: "Costa Rican Colon",
+CUC: "Peso Convertible",
+CUP: "Cuban Peso",
+CZK: "Czech Koruna",
+DKK: "Danish Krone",
+DJF: "Djibouti Franc",
+DOP: "Dominican Peso",
+EGP: "Egyptian Pound",
+SVC: "El Salvador Colon",
+ERN: "Nakfa",
+ETB: "Ethiopian Birr",
+FKP: "Falkland Islands Pound",
+FJD: "Fiji Dollar",
+XPF: "CFP Franc",
+GMD: "Dalasi",
+GEL: "Lari",
+GHS: "Ghana Cedi",
+GIP: "Gibraltar Pound",
+GNF: "Guinea Franc",
+GYD: "Guyana Dollar",
+HTG: "Gourde",
+HNL: "Lempira",
+HKD: "Hong Kong Dollar",
+HUF: "Forint",
+ISK: "Iceland Krona",
+INR: "Indian Rupee",
+IDR: "Rupiah",
+XDR: "SDR (Special Drawing Right)",
+IRR: "Iranian Rial",
+IQD: "Iraqi Dinar",
+ILS: "New Israeli Sheqel",
+JMD: "Jamaican Dollar",
+JPY: "Japanese Yen",
+JOD: "Jordanian Dinar",
+KZT: "Tenge",
+KES: "Kenyan Shilling",
+KPW: "North Korean Won",
+KRW: "Won",
+KWD: "Kuwaiti Dinar",
+KGS: "Som",
+LAK: "Kip",
+LBP: "Lebanese Pound",
+LSL: "Loti",
+LRD: "Liberian Dollar",
+LYD: "Libyan Dinar",
+CHF: "Swiss Franc",
+MOP: "Pataca",
+MGA: "Malagasy Ariary",
+MWK: "Kwacha",
+MYR: "Malaysian Ringgit",
+MVR: "Rufiyaa",
+MRU: "Ouguiya",
+MUR: "Mauritius Rupee",
+XUA: "ADB Unit of Account",
+MXN: "Mexican Peso",
+MXV: "Mexican Unidad de Inversion (UDI)",
+MDL: "Moldovan Leu",
+MNT: "Tugrik",
+MAD: "Moroccan Dirham",
+MZN: "Mozambique Metical",
+MMK: "Kyat",
+NAD: "Namibia Dollar",
+NPR: "Nepalese Rupee",
+NIO: "Cordoba Oro",
+NGN: "Naira",
+OMR: "Rial Omani",
+PKR: "Pakistan Rupee",
+PAB: "Balboa",
+PGK: "Kina",
+PYG: "Guarani",
+PEN: "Nuevo Sol",
+PHP: "Philippine Peso",
+PLN: "Zloty",
+QAR: "Qatari Rial",
+MKD: "Denar",
+RON: "Romanian Leu",
+RUB: "Russian Ruble",
+RWF: "Rwanda Franc",
+SHP: "Saint Helena Pound",
+WST: "Tala",
+STN: "Dobra",
+SAR: "Saudi Riyal",
+RSD: "Serbian Dinar",
+SCR: "Seychelles Rupee",
+SLE: "Leone",
+SGD: "Singapore Dollar",
+SBD: "Solomon Islands Dollar",
+SOS: "Somali Shilling",
+ZAR: "Rand",
+SSP: "South Sudanese Pound",
+LKR: "Sri Lanka Rupee",
+SDG: "Sudanese Pound",
+SRD: "Surinam Dollar",
+SZL: "Lilangeni",
+SEK: "Swedish Krona",
+CHE: "WIR Euro",
+CHW: "WIR Franc",
+SYP: "Syrian Pound",
+TWD: "New Taiwan Dollar",
+TJS: "Somoni",
+TZS: "Tanzanian Shilling",
+THB: "Baht",
+TOP: "Pa’anga",
+TTD: "Trinidad and Tobago Dollar",
+TND: "Tunisian Dinar",
+TRY: "Turkish Lira",
+TMT: "Turkmenistan New Manat",
+UGX: "Uganda Shilling",
+UAH: "Hryvnia",
+AED: "UAE Dirham",
+GBP: "Pound Sterling",
+USN: "US Dollar (Next day)",
+UYI: "Uruguay Peso en Unidades Indexadas (URUIURUI)",
+UYU: "Peso Uruguayo",
+UZS: "Uzbekistan Sum",
+VUV: "Vatu",
+VED: "Bolivar",
+VND: "Dong",
+ZMW: "Zambian Kwacha",
+ZWL: "Zimbabwe Dollar"
+     
+    };
+
+    // 初始化下拉框
+    async function populate() {
+      fromEl.disabled = toEl.disabled = true;
+      const loadingOpt = new Option("Loading currencies...", "");
+      fromEl.add(loadingOpt.cloneNode(true)); 
+      toEl.add(loadingOpt);
+
+      try {
+        const r = await fetch('https://api.exchangerate.host/symbols');
+        const data = await r.json();
+        fromEl.innerHTML = toEl.innerHTML = '';
+        if (data && data.symbols) {
+          Object.entries(data.symbols).forEach(([code, obj]) => {
+            fromEl.add(new Option(`${code} — ${obj.description}`, code));
+            toEl.add(new Option(`${code} — ${obj.description}`, code));
+          });
+        } else throw new Error('No symbols in response');
+      } catch (err) {
+        console.warn('Symbols fetch failed, using fallback list:', err);
+        fromEl.innerHTML = toEl.innerHTML = '';
+        Object.entries(fallbackSymbols).forEach(([code, desc]) => {
+          fromEl.add(new Option(`${code} — ${desc}`, code));
+          toEl.add(new Option(`${code} — ${desc}`, code));
+        });
+      } finally {
+        fromEl.disabled = toEl.disabled = false;
+        fromEl.value = 'USD'; 
+        toEl.value = 'EUR';
+        graph.textContent = 'Forex graph — in progress';
+      }
+    }
+
+    // 执行货币转换
+    async function convert(){
+      const f = fromEl.value, t = toEl.value, a = amtEl.value || 1;
+      resEl.textContent = 'Checking...';
+      try {
+        const r = await fetch(`https://api.exchangerate.host/convert?from=${f}&to=${t}&amount=${a}`);
+        const d = await r.json();
+        resEl.textContent = `${a} ${f} = ${d.result} ${t}`;
+      } catch(e) {
+        resEl.textContent = 'Conversion failed — check your network or run the file from a server.';
+      }
+    }
+
+    // 绑定点击事件
+    document.getElementById('btn').addEventListener('click', convert);
+
+    // 页面加载时初始化下拉框
+    populate();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

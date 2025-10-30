@@ -1,0 +1,144 @@
+/* --------------------------- */
+/* 全局样式 Body */
+/* --------------------------- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    color: #222222;
+    margin: 0;
+    padding: 20px 20px;             /* 顶部/底部间距加大，页面更舒展 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    gap: 30px;                      /* 元素之间默认间距 */
+}
+
+/* --------------------------- */
+/* LOGO样式 */
+/* --------------------------- */
+img {
+    width: 200px;
+    max-width: 90%;
+    margin: 40px 0;                 /* 上下间距加大 */
+}
+
+/* --------------------------- */
+/* 页面标题 h1 */
+/* --------------------------- */
+h1 {
+    text-align: center;
+    font-size: 2.8rem;              /* 稍大一点，更醒目 */
+    margin: 30px 0 30px;            /* 上下间距加大 */
+    color: #000000;
+}
+
+/* --------------------------- */
+/* 段落 p */
+/* --------------------------- */
+p {
+    font-size: 1.1rem;
+    margin: 20px 0;                 /* 上下间距加大 */
+    text-align: center;
+    line-height: 1.8;               /* 行高加大，阅读舒适 */
+}
+
+/* --------------------------- */
+/* 输入框 input 和下拉菜单 select */
+/* --------------------------- */
+input, select {
+    padding: 12px 16px;             /* 内边距加大 */
+    font-size: 1rem;
+    margin: 0 10px 20px 10px;       /* 左右间距稍大，底部加间距 */
+    border-radius: 16px;            /* 圆角更柔和 */
+    border: 1px solid #000000;
+    transition: all 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: #187a9e;
+    outline: none;
+    box-shadow: 0 0 8px rgba(141, 171, 223, 0.4);
+}
+
+/* 桌面端下拉框宽度 */
+select {
+    width: 260px;                   /* 略宽，让视觉舒展 */
+}
+
+/* 桌面端Amount输入框宽度 */
+input#amt {
+    width: 66px;                   /* 略宽 */
+}
+
+/* --------------------------- */
+/* 按钮样式 */
+/* --------------------------- */
+button {
+    padding: 12px 30px;             /* 按钮更大，更舒展 */
+    font-size: 1rem;
+    margin: 20px 0;                 /* 上下间距增加 */
+    border: none;
+    border-radius: 50px;
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #9554c5;
+    transform: translateY(-3px);    /* 悬浮浮起更明显 */
+}
+
+/* --------------------------- */
+/* 转换结果 #result */
+/* --------------------------- */
+#result {
+    font-weight: bold;
+    font-size: 1.3rem;              /* 略大，更醒目 */
+    margin: 25px 0;                 /* 上下间距加大 */
+    color: #1d831e;
+}
+
+/* --------------------------- */
+/* 图表容器 #graph */
+/* --------------------------- */
+#graph {
+    margin-top: 3px;
+    border: 2px dashed #ccc;
+    padding: 2px;                  /* 内边距加大 */
+    border-radius: 16px;
+    text-align: center;
+    color: #666;
+    width: 90%;
+    max-width: 300px;               /* 略大一点 */
+    background-color: #f9f9f9;
+}
+
+/* --------------------------- */
+/* 移动端响应式 */
+/* --------------------------- */
+@media (max-width: 600px) {
+    p {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    select, input#amt {
+        width: 90%;                  /* 移动端占比更多，视觉舒展 */
+        margin: 15px 0;
+    }
+
+    button {
+        width: 90%;
+        margin: 20px 0;
+    }
+
+    #graph {
+        width: 95%;
+    }
+}

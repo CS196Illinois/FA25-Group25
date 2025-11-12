@@ -1,269 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Forexplorer - Currency Exchange</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6f9;
+      text-align: center;
+      padding: 30px;
+    }
 
-  <link rel="stylesheet" href="(2).css">
+    img {
+      width: 120px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      color: #004aad;
+      margin-bottom: 20px;
+    }
+
+    select, input {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #004aad;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00347a;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    #graph {
+      margin-top: 30px;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
+  <img src="LOGO.png" alt="Forexplorer Logo" />
 
- 
-  <img src="LOGO.png" alt="Forexplorer Logo">
-
-  
   <h1>Forexplorer - Currency Exchange</h1>
 
-
   <p>
-    From: <select id="from"></select> 
-    To: <select id="to"></select> 
-    Amount: <input id="amt" value="1" size="6">
+    From:
+    <select id="from"></select>
+    To:
+    <select id="to"></select>
+    Amount:
+    <input id="amt" value="1" size="6" type="number" min="0" />
   </p>
-
 
   <button id="btn">Convert</button>
 
   <p id="result"></p>
 
-
   <div id="graph">Forex graph — in progress</div>
 
- 
   <script>
+    const API_KEY = "8f98b87455c5723b1fae719e";
 
     const fromEl = document.getElementById('from');
     const toEl = document.getElementById('to');
     const amtEl = document.getElementById('amt');
     const resEl = document.getElementById('result');
-    const graph = document.getElementById('graph');
 
     const fallbackSymbols = {
       USD: "United States Dollar",
       EUR: "Euro",
-      AFN: "Afghani",
-ALL: "Lek",
-DZD: "Algerian Dinar",
-AOA: "Kwanza",
-XCD: "East Caribbean Dollar",
-ARS: "Argentine Peso",
-AMD: "Armenian Dram",
-AWG: "Aruban Florin",
-AUD: "Australian Dollar",
-AZN: "Azerbaijanian Manat",
-BSD: "Bahamian Dollar",
-BHD: "Bahraini Dinar",
-BDT: "Taka",
-BBD: "Barbados Dollar",
-BYN: "Belarussian Ruble",
-BZD: "Belize Dollar",
-XOF: "CFA Franc BCEAO",
-BMD: "Bermudian Dollar",
-BTN: "Ngultrum",
-BOB: "Boliviano",
-BOV: "Mvdol",
-BAM: "Convertible Mark",
-BWP: "Pula",
-NOK: "Norwegian Krone",
-BRL: "Brazilian Real",
-BND: "Brunei Dollar",
-BGN: "Bulgarian Lev",
-BIF: "Burundi Franc",
-CVE: "Cabo Verde Escudo",
-KHR: "Riel",
-XAF: "CFA Franc BEAC",
-CAD: "Canadian Dollar",
-KYD: "Cayman Islands Dollar",
-CLF: "Unidad de Fomento",
-CLP: "Chilean Peso",
-CNY: "Yuan Renminbi",
-COP: "Colombian Peso",
-COU: "Unidad de Valor Real",
-KMF: "Comoro Franc",
-CDF: "Congolese Franc",
-NZD: "New Zealand Dollar",
-CRC: "Costa Rican Colon",
-CUC: "Peso Convertible",
-CUP: "Cuban Peso",
-CZK: "Czech Koruna",
-DKK: "Danish Krone",
-DJF: "Djibouti Franc",
-DOP: "Dominican Peso",
-EGP: "Egyptian Pound",
-SVC: "El Salvador Colon",
-ERN: "Nakfa",
-ETB: "Ethiopian Birr",
-FKP: "Falkland Islands Pound",
-FJD: "Fiji Dollar",
-XPF: "CFP Franc",
-GMD: "Dalasi",
-GEL: "Lari",
-GHS: "Ghana Cedi",
-GIP: "Gibraltar Pound",
-GNF: "Guinea Franc",
-GYD: "Guyana Dollar",
-HTG: "Gourde",
-HNL: "Lempira",
-HKD: "Hong Kong Dollar",
-HUF: "Forint",
-ISK: "Iceland Krona",
-INR: "Indian Rupee",
-IDR: "Rupiah",
-XDR: "SDR (Special Drawing Right)",
-IRR: "Iranian Rial",
-IQD: "Iraqi Dinar",
-ILS: "New Israeli Sheqel",
-JMD: "Jamaican Dollar",
-JPY: "Japanese Yen",
-JOD: "Jordanian Dinar",
-KZT: "Tenge",
-KES: "Kenyan Shilling",
-KPW: "North Korean Won",
-KRW: "Won",
-KWD: "Kuwaiti Dinar",
-KGS: "Som",
-LAK: "Kip",
-LBP: "Lebanese Pound",
-LSL: "Loti",
-LRD: "Liberian Dollar",
-LYD: "Libyan Dinar",
-CHF: "Swiss Franc",
-MOP: "Pataca",
-MGA: "Malagasy Ariary",
-MWK: "Kwacha",
-MYR: "Malaysian Ringgit",
-MVR: "Rufiyaa",
-MRU: "Ouguiya",
-MUR: "Mauritius Rupee",
-XUA: "ADB Unit of Account",
-MXN: "Mexican Peso",
-MXV: "Mexican Unidad de Inversion (UDI)",
-MDL: "Moldovan Leu",
-MNT: "Tugrik",
-MAD: "Moroccan Dirham",
-MZN: "Mozambique Metical",
-MMK: "Kyat",
-NAD: "Namibia Dollar",
-NPR: "Nepalese Rupee",
-NIO: "Cordoba Oro",
-NGN: "Naira",
-OMR: "Rial Omani",
-PKR: "Pakistan Rupee",
-PAB: "Balboa",
-PGK: "Kina",
-PYG: "Guarani",
-PEN: "Nuevo Sol",
-PHP: "Philippine Peso",
-PLN: "Zloty",
-QAR: "Qatari Rial",
-MKD: "Denar",
-RON: "Romanian Leu",
-RUB: "Russian Ruble",
-RWF: "Rwanda Franc",
-SHP: "Saint Helena Pound",
-WST: "Tala",
-STN: "Dobra",
-SAR: "Saudi Riyal",
-RSD: "Serbian Dinar",
-SCR: "Seychelles Rupee",
-SLE: "Leone",
-SGD: "Singapore Dollar",
-SBD: "Solomon Islands Dollar",
-SOS: "Somali Shilling",
-ZAR: "Rand",
-SSP: "South Sudanese Pound",
-LKR: "Sri Lanka Rupee",
-SDG: "Sudanese Pound",
-SRD: "Surinam Dollar",
-SZL: "Lilangeni",
-SEK: "Swedish Krona",
-CHE: "WIR Euro",
-CHW: "WIR Franc",
-SYP: "Syrian Pound",
-TWD: "New Taiwan Dollar",
-TJS: "Somoni",
-TZS: "Tanzanian Shilling",
-THB: "Baht",
-TOP: "Pa’anga",
-TTD: "Trinidad and Tobago Dollar",
-TND: "Tunisian Dinar",
-TRY: "Turkish Lira",
-TMT: "Turkmenistan New Manat",
-UGX: "Uganda Shilling",
-UAH: "Hryvnia",
-AED: "UAE Dirham",
-GBP: "Pound Sterling",
-USN: "US Dollar (Next day)",
-UYI: "Uruguay Peso en Unidades Indexadas (URUIURUI)",
-UYU: "Peso Uruguayo",
-UZS: "Uzbekistan Sum",
-VUV: "Vatu",
-VED: "Bolivar",
-VND: "Dong",
-ZMW: "Zambian Kwacha",
-ZWL: "Zimbabwe Dollar"
-     
+      GBP: "British Pound",
+      INR: "Indian Rupee",
+      JPY: "Japanese Yen",
+      AUD: "Australian Dollar",
+      CAD: "Canadian Dollar",
+      CHF: "Swiss Franc",
+      CNY: "Chinese Yuan",
+      NZD: "New Zealand Dollar"
     };
 
+    // Populate dropdowns
+    function populate() {
+      fromEl.innerHTML = '';
+      toEl.innerHTML = '';
+      Object.entries(fallbackSymbols).forEach(([code, desc]) => {
+        fromEl.add(new Option(`${code} — ${desc}`, code));
+        toEl.add(new Option(`${code} — ${desc}`, code));
+      });
+      fromEl.value = 'USD';
+      toEl.value = 'EUR';
+    }
 
-    async function populate() {
-      fromEl.disabled = toEl.disabled = true;
-      const loadingOpt = new Option("Loading currencies...", "");
-      fromEl.add(loadingOpt.cloneNode(true)); 
-      toEl.add(loadingOpt);
+    // Convert using ExchangeRate-API
+    async function convert() {
+      const from = fromEl.value;
+      const to = toEl.value;
+      const amt = parseFloat(amtEl.value);
+
+      if (!amt || amt <= 0) {
+        resEl.textContent = 'Please enter a valid amount.';
+        return;
+      }
+
+      resEl.textContent = 'Converting…';
 
       try {
-        const r = await fetch('https://api.exchangerate.host/symbols');
-        const data = await r.json();
-        fromEl.innerHTML = toEl.innerHTML = '';
-        if (data && data.symbols) {
-          Object.entries(data.symbols).forEach(([code, obj]) => {
-            fromEl.add(new Option(`${code} — ${obj.description}`, code));
-            toEl.add(new Option(`${code} — ${obj.description}`, code));
-          });
-        } else throw new Error('No symbols in response');
+        const url = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/${from}`;
+        console.log('Fetching:', url);
+        const resp = await fetch(url);
+        const data = await resp.json();
+        console.log('Response:', data);
+
+        if (data.result === "success" && data.conversion_rates[to]) {
+          const rate = data.conversion_rates[to];
+          const result = (amt * rate).toFixed(2);
+          resEl.textContent = `${amt} ${from} = ${result} ${to}`;
+        } else {
+          resEl.textContent = 'Conversion failed — no rate available.';
+        }
       } catch (err) {
-        console.warn('Symbols fetch failed, using fallback list:', err);
-        fromEl.innerHTML = toEl.innerHTML = '';
-        Object.entries(fallbackSymbols).forEach(([code, desc]) => {
-          fromEl.add(new Option(`${code} — ${desc}`, code));
-          toEl.add(new Option(`${code} — ${desc}`, code));
-        });
-      } finally {
-        fromEl.disabled = toEl.disabled = false;
-        fromEl.value = 'USD'; 
-        toEl.value = 'EUR';
-        graph.textContent = 'Forex graph — in progress';
+        console.error(err);
+        resEl.textContent = 'Error connecting to API. Try again later.';
       }
     }
 
-   
-    async function convert(){
-      const f = fromEl.value, t = toEl.value, a = amtEl.value || 1;
-      resEl.textContent = 'Checking...';
-      try {
-        const r = await fetch(`https://api.exchangerate.host/convert?from=${f}&to=${t}&amount=${a}`);
-        const d = await r.json();
-        resEl.textContent = `${a} ${f} = ${d.result} ${t}`;
-      } catch(e) {
-        resEl.textContent = 'Conversion failed — check your network or run the file from a server.';
-      }
-    }
-
-  
     document.getElementById('btn').addEventListener('click', convert);
-
-    
     populate();
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forexplorer - Currency Exchange</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6f9;
+      text-align: center;
+      padding: 30px;
+    }
+
+    img {
+      width: 120px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      color: #004aad;
+      margin-bottom: 20px;
+    }
+
+    select, input {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #004aad;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00347a;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    #graph {
+      margin-top: 30px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <img src="LOGO.png" alt="Forexplorer Logo" />
+
+  <h1>Forexplorer - Currency Exchange</h1>
+
+  <p>
+    From:
+    <select id="from"></select>
+    To:
+    <select id="to"></select>
+    Amount:
+    <input id="amt" value="1" size="6" type="number" min="0" />
+  </p>
+
+  <button id="btn">Convert</button>
+
+  <p id="result"></p>
+
+  <div id="graph">Forex graph — in progress</div>
+
+  <script>
+    const API_KEY = "8f98b87455c5723b1fae719e";
+
+    const fromEl = document.getElementById('from');
+    const toEl = document.getElementById('to');
+    const amtEl = document.getElementById('amt');
+    const resEl = document.getElementById('result');
+
+    const fallbackSymbols = {
+      USD: "United States Dollar",
+      EUR: "Euro",
+      GBP: "British Pound",
+      INR: "Indian Rupee",
+      JPY: "Japanese Yen",
+      AUD: "Australian Dollar",
+      CAD: "Canadian Dollar",
+      CHF: "Swiss Franc",
+      CNY: "Chinese Yuan",
+      NZD: "New Zealand Dollar"
+    };
+
+    // Populate dropdowns
+    function populate() {
+      fromEl.innerHTML = '';
+      toEl.innerHTML = '';
+      Object.entries(fallbackSymbols).forEach(([code, desc]) => {
+        fromEl.add(new Option(`${code} — ${desc}`, code));
+        toEl.add(new Option(`${code} — ${desc}`, code));
+      });
+      fromEl.value = 'USD';
+      toEl.value = 'EUR';
+    }
+
+    // Convert using ExchangeRate-API
+    async function convert() {
+      const from = fromEl.value;
+      const to = toEl.value;
+      const amt = parseFloat(amtEl.value);
+
+      if (!amt || amt <= 0) {
+        resEl.textContent = 'Please enter a valid amount.';
+        return;
+      }
+
+      resEl.textContent = 'Converting…';
+
+      try {
+        const url = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/${from}`;
+        console.log('Fetching:', url);
+        const resp = await fetch(url);
+        const data = await resp.json();
+        console.log('Response:', data);
+
+        if (data.result === "success" && data.conversion_rates[to]) {
+          const rate = data.conversion_rates[to];
+          const result = (amt * rate).toFixed(2);
+          resEl.textContent = `${amt} ${from} = ${result} ${to}`;
+        } else {
+          resEl.textContent = 'Conversion failed — no rate available.';
+        }
+      } catch (err) {
+        console.error(err);
+        resEl.textContent = 'Error connecting to API. Try again later.';
+      }
+    }
+
+    document.getElementById('btn').addEventListener('click', convert);
+    populate();
+  </script>
+</body>
+</html>

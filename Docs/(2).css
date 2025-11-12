@@ -1,0 +1,126 @@
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    color: #222222;
+    margin: 0;
+    padding: 20px 20px;            
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    gap: 30px;                   
+}
+
+
+img {
+    width: 200px;
+    max-width: 90%;
+    margin: 40px 0;               
+}
+
+
+h1 {
+    text-align: center;
+    font-size: 2.8rem;            
+    margin: 30px 0 30px;            
+    color: #000000;
+}
+
+
+p {
+    font-size: 1.1rem;
+    margin: 20px 0;               
+    text-align: center;
+    line-height: 1.8;              
+}
+
+
+input, select {
+    padding: 12px 16px;           
+    font-size: 1rem;
+    margin: 0 10px 20px 10px;       
+    border-radius: 16px;            
+    border: 1px solid #000000;
+    transition: all 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: #187a9e;
+    outline: none;
+    box-shadow: 0 0 8px rgba(141, 171, 223, 0.4);
+}
+
+
+select {
+    width: 260px;                   
+}
+
+
+input#amt {
+    width: 66px;               
+}
+
+
+button {
+    padding: 12px 30px;        
+    font-size: 1rem;
+    margin: 20px 0;              
+    border: none;
+    border-radius: 50px;
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #9554c5;
+    transform: translateY(-3px);    
+}
+
+
+#result {
+    font-weight: bold;
+    font-size: 1.3rem;              
+    margin: 25px 0;                 
+    color: #1d831e;
+}
+
+
+#graph {
+    margin-top: 3px;
+    border: 2px dashed #ccc;
+    padding: 2px;                 
+    border-radius: 16px;
+    text-align: center;
+    color: #666;
+    width: 90%;
+    max-width: 300px;               
+    background-color: #f9f9f9;
+}
+
+
+@media (max-width: 600px) {
+    p {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    select, input#amt {
+        width: 90%;                 
+        margin: 15px 0;
+    }
+
+    button {
+        width: 90%;
+        margin: 20px 0;
+    }
+
+    #graph {
+        width: 95%;
+    }
+}
